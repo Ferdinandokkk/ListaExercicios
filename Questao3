@@ -1,0 +1,46 @@
+#include <stdio.h>
+
+#define ALUNOS 5
+#define PROVAS 4
+
+int main() {
+    float notas[ALUNOS][PROVAS];
+    float mediaAluno[ALUNOS], mediaTurma = 0.0;
+
+    // Leitura das notas
+    printf("Digite as notas dos alunos (valores entre 0 e 10):\n");
+    for (int i = 0; i < ALUNOS; i++) {
+        printf("Aluno %d:\n", i + 1);
+        for (int j = 0; j < PROVAS; j++) {
+            do {
+                printf("  Nota da prova %d: ", j + 1);
+                scanf("%f", &notas[i][j]);
+
+                if (notas[i][j] < 0 || notas[i][j] > 10) {
+                    printf("Nota inválida! Insira uma nota entre 0 e 10.\n");
+                }
+            } while (notas[i][j] < 0 || notas[i][j] > 10);
+        }
+    }
+
+    // Cálculo das médias
+    for (int i = 0; i < ALUNOS; i++) {
+        float somaNotas = 0.0;
+        for (int j = 0; j < PROVAS; j++) {
+            somaNotas += notas[i][j];
+        }
+        mediaAluno[i] = somaNotas / PROVAS;
+        mediaTurma += mediaAluno[i];
+    }
+    mediaTurma /= ALUNOS;
+
+    // Exibição das médias
+    printf("\nMédias dos alunos:\n");
+    for (int i = 0; i < ALUNOS; i++) {
+        printf("Aluno %d: %.2f\n", i + 1, mediaAluno[i]);
+    }
+
+    printf("\nMédia da turma: %.2f\n", mediaTurma);
+
+    return 0;
+}
