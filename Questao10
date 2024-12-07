@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+// Função recursiva para calcular a somatória
+int somatorio(int N) {
+    if (N == 1) {
+        return 1;  // Caso base: somatório de 1 é 1
+    } else {
+        return N + somatorio(N - 1);  // Chamada recursiva
+    }
+}
+
+int main() {
+    int N;
+
+    // Solicitar ao usuário que informe o valor de N
+    printf("Digite um valor para N: ");
+    scanf("%d", &N);
+
+    // Verificar se N é maior que 0
+    if (N > 0) {
+        int resultado = somatorio(N);
+        printf("A somatória dos números de 1 a %d é: %d\n", N, resultado);
+    } else {
+        printf("Por favor, insira um número positivo.\n");
+    }
+
+    return 0;
+}
