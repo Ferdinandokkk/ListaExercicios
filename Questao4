@@ -1,0 +1,57 @@
+#include <stdio.h>
+
+#define CIDADES 7
+#define MESES 6
+
+int main() {
+    float indices[CIDADES][MESES];
+    float mediaMensalCidade[CIDADES] = {0};
+    float mediaMensalRegiao[MESES] = {0};
+
+    // Leitura dos índices pluviométricos
+    printf("Digite os índices pluviométricos (em mm):\n");
+    for (int i = 0; i < CIDADES; i++) {
+        printf("Cidade %d:\n", i + 1);
+        for (int j = 0; j < MESES; j++) {
+            printf("  Mês %d: ", j + 1);
+            scanf("%f", &indices[i][j]);
+
+            // Validação: índice não pode ser negativo
+            if (indices[i][j] < 0) {
+                printf("Índice inválido! Insira um valor positivo.\n");
+                j--; // Refazer a entrada para o mesmo mês
+            }
+        }
+    }
+
+    // Cálculo da média mensal de cada cidade
+    for (int i = 0; i < CIDADES; i++) {
+        float somaCidade = 0;
+        for (int j = 0; j < MESES; j++) {
+            somaCidade += indices[i][j];
+        }
+        mediaMensalCidade[i] = somaCidade / MESES;
+    }
+
+    // Cálculo da média mensal na região
+    for (int j = 0; j < MESES; j++) {
+        float somaMes = 0;
+        for (int i = 0; i < CIDADES; i++) {
+            somaMes += indices[i][j];
+        }
+        mediaMensalRegiao[j] = somaMes / CIDADES;
+    }
+
+    // Exibição dos resultados
+    printf("\nMédia mensal de pluviosidade por cidade:\n");
+    for (int i = 0; i < CIDADES; i++) {
+        printf("Cidade %d: %.2f mm\n", i + 1, mediaMensalCidade[i]);
+    }
+
+    printf("\nMédia mensal de pluviosidade na região:\n");
+    for (int j = 0; j < MESES; j++) {
+        printf("Mês %d: %.2f mm\n", j + 1, mediaMensalRegiao[j]);
+    }
+
+    return 0;
+}
