@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <limits.h> // Para usar INT_MAX e INT_MIN
+
+int main() {
+    int matriz[3][3];
+    int maior = INT_MIN, menor = INT_MAX;
+
+    // Leitura da matriz
+    printf("Digite os valores para uma matriz 3x3:\n");
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            printf("Elemento [%d][%d]: ", i, j);
+            scanf("%d", &matriz[i][j]);
+
+            // Atualiza maior e menor
+            if (matriz[i][j] > maior) {
+                maior = matriz[i][j];
+            }
+            if (matriz[i][j] < menor) {
+                menor = matriz[i][j];
+            }
+        }
+    }
+
+    // Exibe o maior e o menor elemento
+    printf("\nO maior elemento é: %d\n", maior);
+    printf("O menor elemento é: %d\n", menor);
+
+    return 0;
+}
