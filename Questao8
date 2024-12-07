@@ -1,0 +1,177 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+// Definição da estrutura voo
+typedef struct Voo {
+    int numero;
+    int data; // 1 - seg, ..., 8 - diário
+    int hora, min;
+    int aeroportoSaida;
+    int aeroportoChegada;
+    int rota;
+    float tempoEstimado;
+    int passageiros;
+    struct Voo *proximo;
+} Voo;
+
+// Função para criar um novo voo
+Voo* criarVoo(int numero, int data, int hora, int min, int aeroportoSaida, int aeroportoChegada, int rota, float tempoEstimado, int passageiros) {
+    Voo *novoVoo = (Voo*) malloc(sizeof(Voo));
+    if (!novoVoo) {
+        printf("Erro ao alocar memória.\n");
+        exit(1);
+    }
+    novoVoo->numero = numero;
+    novoVoo->data = data;
+    novoVoo->hora = hora;
+    novoVoo->min = min;
+    novoVoo->aeroportoSaida = aeroportoSaida;
+    novoVoo->aeroportoChegada = aeroportoChegada;
+    novoVoo->rota = rota;
+    novoVoo->tempoEstimado = tempoEstimado;
+    novoVoo->passageiros = passageiros;
+    novoVoo->proximo = NULL;
+    return novoVoo;
+}
+
+// Função para adicionar um voo à lista
+void adicionarVoo(Voo **lista, Voo *novoVoo) {
+    if (*lista == NULL) {
+        *lista = novoVoo;
+    } else {
+        Voo *aux = *lista;
+        while (aux->proximo != NULL) {
+            aux = aux->proximo;
+        }
+        aux->proximo = novoVoo;
+    }
+}
+
+// Função para cadastrar um voo
+void cadastrarVoo(Voo **lista) {
+    int numero, data, hora, min, aeroportoSaida, aeroportoChegada, rota, passageiros;
+    float tempoEstimado;
+
+    printf("Cadastrar novo voo:\n");
+    printf("Número do voo: ");
+    scanf("%d", &numero);
+    printf("Data do voo (1 - seg, ..., 8 - diário): ");
+    scanf("%d", &data);
+    printf("Horário do voo (hora): ");
+    scanf("%d", &hora);
+    printf("Horário do voo (minutos): ");
+    scanf("%d", &min);
+    printf("Aeroporto de saída (ID): ");
+    scanf("%d", &aeroportoSaida);
+    printf("Aeroporto de chegada (ID): ");
+    scanf("%d", &aeroportoChegada);
+    printf("Rota (ID): ");
+    scanf("%d", &rota);
+    printf("Tempo estimado de voo (em horas): ");
+    scanf("%f", &tempoEstimado);
+    printf("Passageiros a bordo: ");
+    scanf("%d", &passageiros);
+
+    // Criar o voo e adicionar à lista
+    Voo *novoVoo = criarVoo(numero, data, hora, min, aeroportoSaida, aeroportoChegada, rota, tempoEstimado, passageiros);
+    adicionarVoo(lista, novoVoo);
+
+    printf("Voo cadastrado com sucesso!\n");
+}
+
+// Função para consultar um voo pelo número
+void consultaVoo(Voo *lista, int numeroVoo) {
+    Voo *aux = lista;
+    int encontrado = 0;
+    
+    while (aux != NULL) {
+        if (aux->numero == numeroVoo) {
+            printf("Voo encontrado!\n");
+            printf("Número do voo: %d\n", aux->numero);
+            printf("Data do voo: %d\n", aux->data);
+            printf("Horário do voo: %02d:%02d\n", aux->hora, aux->min);
+            printf("Aeroporto de saída (ID): %d\n", aux->aeroportoSaida);
+            printf("Aeroporto de chegada (ID): %d\n", aux->aeroportoChegada);
+            printf("Rota (ID): %d\n", aux->rota);
+            printf("Tempo estimado de voo: %.2f horas\n", aux->tempoEstimado);
+            printf("Passageiros a bordo: %d\n", aux->passageiros);
+            encontrado = 1;
+            break;
+        }
+        aux = aux->proximo;
+    }
+    
+    if (!encontrado) {
+        printf("Voo não encontrado.\n");
+    }
+}
+
+// Função para imprimir os voos
+void imprimirVoos(Voo *lista) {
+    if (lista == NULL) {
+        printf("Nenhum voo registrado.\n");
+        return;
+    }
+    Voo *aux = lista;
+    while (aux != NULL) {
+        printf("Número do voo: %d\n", aux->numero);
+        printf("Data do voo: %d\n", aux->data);
+        printf("Horário do voo: %02d:%02d\n", aux->hora, aux->min);
+        printf("Aeroporto de saída (ID): %d\n", aux->aeroportoSaida);
+        printf("Aeroporto de chegada (ID): %d\n", aux->aeroportoChegada);
+        printf("Rota (ID): %d\n", aux->rota);
+        printf("Tempo estimado de voo: %.2f horas\n", aux->tempoEstimado);
+        printf("Passageiros a bordo: %d\n", aux->passageiros);
+        printf("------------------------------------\n");
+        aux = aux->proximo;
+    }
+}
+
+// Função principal
+int main() {
+    Voo *listaVoos = NULL;
+
+    int opcao;
+    int numeroVoo;
+
+    do {
+        printf("\nMENU:\n");
+        printf("1. Cadastrar novo voo\n");
+        printf("2. Consultar voo por número\n");
+        printf("3. Listar todos os voos\n");
+        printf("4. Sair\n");
+        printf("Escolha uma opção: ");
+        scanf("%d", &opcao);
+
+        switch (opcao) {
+            case 1:
+                cadastrarVoo(&listaVoos);
+                break;
+            case 2:
+                printf("Digite o número do voo a ser consultado: ");
+                scanf("%d", &numeroVoo);
+                consultaVoo(listaVoos, numeroVoo);
+                break;
+            case 3:
+                printf("\nLista de voos registrados:\n");
+                printf("------------------------------------\n");
+                imprimirVoos(listaVoos);
+                break;
+            case 4:
+                printf("Encerrando o programa...\n");
+                break;
+            default:
+                printf("Opção inválida. Tente novamente.\n");
+        }
+    } while (opcao != 4);
+
+    // Liberação da memória
+    Voo *aux;
+    while (listaVoos != NULL) {
+        aux = listaVoos;
+        listaVoos = listaVoos->proximo;
+        free(aux);
+    }
+
+    return 0;
+}
